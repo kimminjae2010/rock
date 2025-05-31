@@ -5,7 +5,7 @@ st.set_page_config(page_title="가위바위보 게임", page_icon="✊✋✌️"
 
 st.title("✊✋✌️ 가위바위보 게임")
 
-# 🤖 AI 이모지 크게
+# 🤖 AI 이모지 2배 크기
 st.markdown("""
     <div style='text-align: center; font-size: 72px;'>
         🤖
@@ -24,7 +24,7 @@ if 'win' not in st.session_state:
 choices = ['가위', '바위', '보']
 emojis = {'가위': '✌️', '바위': '✊', '보': '✋'}
 
-# CSS 스타일
+# CSS 버튼 스타일
 st.markdown("""
     <style>
     .rps-container {
@@ -35,7 +35,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# 버튼 동작
+# 버튼 선택 영역
 with st.form("rps_form", clear_on_submit=True):
     st.markdown('<div class="rps-container">', unsafe_allow_html=True)
     col1, col2, col3 = st.columns(3)
@@ -47,7 +47,7 @@ with st.form("rps_form", clear_on_submit=True):
         r3 = st.form_submit_button(f"{emojis['보']} 보", type="primary")
     st.markdown('</div>', unsafe_allow_html=True)
 
-# 플레이어 선택
+# 플레이어 선택 처리
 player_choice = None
 if r1:
     player_choice = '가위'
@@ -56,7 +56,7 @@ elif r2:
 elif r3:
     player_choice = '보'
 
-# 게임 로직
+# 게임 실행
 if player_choice:
     ai_choice = random.choice(choices)
 
@@ -77,13 +77,15 @@ if player_choice:
 
     st.subheader(result)
 
-# 승률 통계 출력
+# 승률 표시
 total_games = st.session_state.win + st.session_state.lose + st.session_state.draw
 if total_games > 0:
     win_rate = st.session_state.win / total_games * 100
     st.markdown("---")
-    st.markdown(f"### 📊 전적 요약")
+    st.markdown(f"<h1>📈 승률: {win_rate:.1f}%</h1>", unsafe_allow_html=True)
+
+    # 전적 요약
+    st.markdown("### 📊 전적 요약")
     st.write(f"- 🏆 승: {st.session_state.win}")
     st.write(f"- ❌ 패: {st.session_state.lose}")
     st.write(f"- 🤝 무: {st.session_state.draw}")
-    st.write(f"- 📈 승률: **{win_rate:.1f}%**")
