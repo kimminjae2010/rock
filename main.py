@@ -30,8 +30,8 @@ if player_choice:
     ai_choice = random.choice(choices)
 
     st.write("---")
-    st.write(f"🤖 AI의 선택: **{ai_choice} {emojis[ai_choice]}**")
-    st.write(f"🧑 당신의 선택: **{player_choice} {emojis[player_choice]}**")
+    st.markdown(f"<h1>🤖 AI의 선택: {ai_choice} {emojis[ai_choice]}</h1>", unsafe_allow_html=True)
+    st.markdown(f"<h1>🧑 당신의 선택: {player_choice} {emojis[player_choice]}</h1>", unsafe_allow_html=True)
 
     if player_choice == ai_choice:
         result = "😐 비겼습니다!"
