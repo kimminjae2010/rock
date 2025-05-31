@@ -3,41 +3,30 @@ import random
 
 st.set_page_config(page_title="가위바위보 게임", page_icon="✊✋✌️")
 
-# 게임 제목
 st.title("✊✋✌️ 가위바위보 게임")
 
-# 🤖 AI 이모지를 2배 크기로 중앙 정렬
+# 🤖 AI 이모지 크게
 st.markdown("""
     <div style='text-align: center; font-size: 72px;'>
         🤖
     </div>
 """, unsafe_allow_html=True)
 
-
 st.write("플레이어 vs AI - 아래 버튼을 눌러 선택하세요!")
+
+# 세션 상태 초기화
+if 'win' not in st.session_state:
+    st.session_state.win = 0
+    st.session_state.lose = 0
+    st.session_state.draw = 0
 
 # 선택지 정의
 choices = ['가위', '바위', '보']
 emojis = {'가위': '✌️', '바위': '✊', '보': '✋'}
 
-# CSS 스타일 추가
+# CSS 스타일
 st.markdown("""
     <style>
-    .rps-button {
-        display: inline-block;
-        font-size: 48px;
-        padding: 30px 50px;
-        margin: 10px;
-        background-color: #f0f2f6;
-        border: 2px solid #999;
-        border-radius: 15px;
-        cursor: pointer;
-        text-align: center;
-        transition: background-color 0.2s ease;
-    }
-    .rps-button:hover {
-        background-color: #dbe4f0;
-    }
     .rps-container {
         display: flex;
         justify-content: center;
@@ -46,7 +35,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# 버튼 동작 - 폼 사용으로 깔끔하게 처리
+# 버튼 동작
 with st.form("rps_form", clear_on_submit=True):
     st.markdown('<div class="rps-container">', unsafe_allow_html=True)
     col1, col2, col3 = st.columns(3)
@@ -58,7 +47,7 @@ with st.form("rps_form", clear_on_submit=True):
         r3 = st.form_submit_button(f"{emojis['보']} 보", type="primary")
     st.markdown('</div>', unsafe_allow_html=True)
 
-# 선택 결과 처리
+# 플레이어 선택
 player_choice = None
 if r1:
     player_choice = '가위'
@@ -67,7 +56,7 @@ elif r2:
 elif r3:
     player_choice = '보'
 
-# 결과 표시
+# 게임 로직
 if player_choice:
     ai_choice = random.choice(choices)
 
@@ -76,11 +65,25 @@ if player_choice:
 
     if player_choice == ai_choice:
         result = "😐 비겼습니다!"
+        st.session_state.draw += 1
     elif (player_choice == '가위' and ai_choice == '보') or \
          (player_choice == '바위' and ai_choice == '가위') or \
          (player_choice == '보' and ai_choice == '바위'):
         result = "🎉 당신이 이겼습니다!"
+        st.session_state.win += 1
     else:
         result = "😢 AI가 이겼습니다."
+        st.session_state.lose += 1
 
     st.subheader(result)
+
+# 승률 통계 출력
+total_games = st.session_state.win + st.session_state.lose + st.session_state.draw
+if total_games > 0:
+    win_rate = st.session_state.win / total_games * 100
+    st.markdown("---")
+    st.markdown(f"### 📊 전적 요약")
+    st.write(f"- 🏆 승: {st.session_state.win}")
+    st.write(f"- ❌ 패: {st.session_state.lose}")
+    st.write(f"- 🤝 무: {st.session_state.draw}")
+    st.write(f"- 📈 승률: **{win_rate:.1f}%**")
