@@ -3,10 +3,16 @@ import random
 
 st.set_page_config(page_title="가위바위보 게임", page_icon="✊✋✌️")
 
+# 게임 제목
 st.title("✊✋✌️ 가위바위보 게임")
 
-# 🤖 AI 이모지 크게 표시 (중앙 정렬, h1 크기)
-st.markdown("<h1 style='text-align: center;'>🤖</h1>", unsafe_allow_html=True)
+# 🤖 AI 이모지를 2배 크기로 중앙 정렬
+st.markdown("""
+    <div style='text-align: center; font-size: 72px;'>
+        🤖
+    </div>
+""", unsafe_allow_html=True)
+
 
 st.write("플레이어 vs AI - 아래 버튼을 눌러 선택하세요!")
 
